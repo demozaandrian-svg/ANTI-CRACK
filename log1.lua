@@ -412,6 +412,8 @@ if toggleIconVisibility then
     pcall(function()
       if not hideTriggerAdded then
         wm.addView(hideTrigger, p_icon)
+          -- Show temporary reminder
+Toast.makeText(activity, "Remember this icon", Toast.LENGTH_SHORT).show()
         hideTriggerAdded = true
       end
     end)
