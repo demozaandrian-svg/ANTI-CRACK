@@ -301,24 +301,24 @@ local p_icon = getParams(0, 100)
 local isMenuHidden = false
 local hideTriggerAdded = false
 
-local hideTrigger = ImageView(activity)
+local hideTrigger = TextView(activity)
+hideTrigger.setText("Remember the icon")
+hideTrigger.setTextColor(0xFFFFFFFF)
+hideTrigger.setTextSize(12)
+hideTrigger.setGravity(Gravity.CENTER)
+hideTrigger.setPadding(15, 8, 15, 8)
 
--- Completely transparent pero clickable pa rin
-hideTrigger.setAlpha(0.0)
-hideTrigger.setBackgroundColor(0x00000000)
-
-local p_hideTrigger = getParams(0, 0)
-p_hideTrigger.width = 55
-p_hideTrigger.height = 55
-
--- Simple background para madaling makita at mapindot
 local triggerBg = GradientDrawable()
-triggerBg.setShape(GradientDrawable.OVAL)
+triggerBg.setShape(GradientDrawable.RECTANGLE)
+triggerBg.setCornerRadius(20)
 triggerBg.setColor(0xEE121212)
-triggerBg.setStroke(2, 0xFF00FFEE)
+triggerBg.setStroke(1, 0xFF00FFEE)
 hideTrigger.setBackground(triggerBg)
 
--- Kapag pinindot ang trigger, ibalik ang menu
+local p_hideTrigger = getParams(0, 0)
+p_hideTrigger.width = -2
+p_hideTrigger.height = -2
+
 hideTrigger.setOnClickListener{
   onClick = function(v)
 
@@ -329,27 +329,25 @@ hideTrigger.setOnClickListener{
     isMenuHidden = false
     hideTriggerAdded = false
 
-    -- Alisin muna ang trigger
     pcall(function()
       wm.removeView(hideTrigger)
     end)
 
-    -- Ibalik ang menu sa EXACT position kung saan ito na-hide
+    -- Restore floating icon
     pcall(function()
-      wm.addView(win_menu, p_menu)
+      wm.addView(win_icon, p_icon)
     end)
 
-    -- Ibalik ang normal alpha
+    isMenuOpen = false
+
     if menufloating then
       menufloating.setAlpha(1.0)
     end
 
-    -- Ibalik ang eye color
     if toggleIconVisibility then
       toggleIconVisibility.setColorFilter(0xFF00FFEE)
     end
 
-    isMenuOpen = true
   end
 }
 
