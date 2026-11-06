@@ -935,38 +935,39 @@ local function applySnowboardSeekbar(progress)
 
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A4C28,
+    0x52286DC,
     "h40 00 00 1C C0 03 5F D6"
   )
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A4C28 + 4,
+    0x52286DC + 4,
     "hC0 03 5F D6 00 00 7A 44"
   )
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A4C28 + 8,
+    0x52286DC + 8,
     hexValue,
     4
   )
 
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A5280,
+    0x522860C,
     "h40 00 00 1C C0 03 5F D6"
   )
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A5280 + 4,
+    0x522860C + 4,
     "hC0 03 5F D6 00 00 7A 44"
   )
   HexPatches.MemoryPatch(
     "libunity.so",
-    0x53A5280 + 8,
+    0x522860C + 8,
     hexValue,
     4
   )
 end
+
 
 
 -- =========================================================
