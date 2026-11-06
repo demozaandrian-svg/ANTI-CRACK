@@ -294,30 +294,23 @@ end
 local p_menu = getParams(0, 0)
 local p_icon = getParams(0, 100)
 
+
 -- ==========================================
--- HIDDEN MENU TRIGGER
+-- INVISIBLE MENU TRIGGER
 -- ==========================================
 
 local isMenuHidden = false
 local hideTriggerAdded = false
 
-local hideTrigger = TextView(activity)
-hideTrigger.setText("Remember the icon")
-hideTrigger.setTextColor(0xFFFFFFFF)
-hideTrigger.setTextSize(12)
-hideTrigger.setGravity(Gravity.CENTER)
-hideTrigger.setPadding(15, 8, 15, 8)
-
-local triggerBg = GradientDrawable()
-triggerBg.setShape(GradientDrawable.RECTANGLE)
-triggerBg.setCornerRadius(20)
-triggerBg.setColor(0xEE121212)
-triggerBg.setStroke(1, 0xFF00FFEE)
-hideTrigger.setBackground(triggerBg)
+-- Completely invisible touch area
+local hideTrigger = View(activity)
+hideTrigger.setBackgroundColor(0x00000000)
+hideTrigger.setAlpha(0.0)
+hideTrigger.setClickable(true)
 
 local p_hideTrigger = getParams(0, 0)
-p_hideTrigger.width = -2
-p_hideTrigger.height = -2
+p_hideTrigger.width = 55
+p_hideTrigger.height = 55
 
 hideTrigger.setOnClickListener{
   onClick = function(v)
@@ -333,12 +326,10 @@ hideTrigger.setOnClickListener{
       wm.removeView(hideTrigger)
     end)
 
-    -- Restore floating icon
+    -- Restore menu at original position
     pcall(function()
-      wm.addView(win_icon, p_icon)
+      wm.addView(win_menu, p_menu)
     end)
-
-    isMenuOpen = false
 
     if menufloating then
       menufloating.setAlpha(1.0)
@@ -348,6 +339,7 @@ hideTrigger.setOnClickListener{
       toggleIconVisibility.setColorFilter(0xFF00FFEE)
     end
 
+    isMenuOpen = true
   end
 }
 
