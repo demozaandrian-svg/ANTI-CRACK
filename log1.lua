@@ -295,19 +295,31 @@ local p_menu = getParams(0, 0)
 local p_icon = getParams(0, 100)
 
 
-
 -- ==========================================
--- INVISIBLE MENU TRIGGER
+-- HIDDEN MENU TRIGGER
 -- ==========================================
 
 local isMenuHidden = false
 local hideTriggerAdded = false
 
--- Invisible clickable view
-local hideTrigger = View(activity)
-hideTrigger.setBackgroundColor(0x00000000)
-hideTrigger.setClickable(true)
+-- Separate trigger na hindi kasama sa menufloating
+local hideTrigger = ImageView(activity)
+hideTrigger.setImageResource(android.R.drawable.ic_menu_view)
+hideTrigger.setColorFilter(0xFF00FFEE)
+hideTrigger.setPadding(12, 12, 12, 12)
 
+local p_hideTrigger = getParams(0, 0)
+p_hideTrigger.width = 55
+p_hideTrigger.height = 55
+
+-- Simple background para madaling makita at mapindot
+local triggerBg = GradientDrawable()
+triggerBg.setShape(GradientDrawable.OVAL)
+triggerBg.setColor(0xEE121212)
+triggerBg.setStroke(2, 0xFF00FFEE)
+hideTrigger.setBackground(triggerBg)
+
+-- Kapag pinindot ang trigger, ibalik ang menu
 hideTrigger.setOnClickListener{
   onClick = function(v)
 
@@ -318,20 +330,22 @@ hideTrigger.setOnClickListener{
     isMenuHidden = false
     hideTriggerAdded = false
 
-    -- Remove invisible trigger
+    -- Alisin muna ang trigger
     pcall(function()
       wm.removeView(hideTrigger)
     end)
 
-    -- Restore menu
+    -- Ibalik ang menu sa EXACT position kung saan ito na-hide
     pcall(function()
       wm.addView(win_menu, p_menu)
     end)
 
+    -- Ibalik ang normal alpha
     if menufloating then
       menufloating.setAlpha(1.0)
     end
 
+    -- Ibalik ang eye color
     if toggleIconVisibility then
       toggleIconVisibility.setColorFilter(0xFF00FFEE)
     end
@@ -339,7 +353,6 @@ hideTrigger.setOnClickListener{
     isMenuOpen = true
   end
 }
-
 
 function createDragListener(wp, lv, cb)
   local ix, iy, itx, ity, idrag = 0,0,0,0,false
@@ -389,11 +402,9 @@ if t1 then
   end
 end
 
-
 -- ==========================================
 -- HIDE / SHOW MENU
 -- ==========================================
-
 if toggleIconVisibility then
 
   toggleIconVisibility.onClick = function()
@@ -402,18 +413,19 @@ if toggleIconVisibility then
       return
     end
 
-    -- Remove menu
+    -- Save exact menu position
+    p_hideTrigger.x = p_menu.x
+    p_hideTrigger.y = p_menu.y
+
+    -- Hide the actual menu
     pcall(function()
       wm.removeView(win_menu)
     end)
 
-    -- Place invisible trigger EXACTLY
-    -- where the floating icon is positioned
+    -- Add invisible clickable area
     pcall(function()
       if not hideTriggerAdded then
-        wm.addView(hideTrigger, p_icon)
-          -- Show temporary reminder
-Toast.makeText(activity, "Remember this icon", Toast.LENGTH_SHORT).show()
+        wm.addView(hideTrigger, p_hideTrigger)
         hideTriggerAdded = true
       end
     end)
@@ -421,14 +433,14 @@ Toast.makeText(activity, "Remember this icon", Toast.LENGTH_SHORT).show()
     isMenuHidden = true
     isMenuOpen = false
 
+    toggleIconVisibility.setColorFilter(0xFFFFFFFF)
+
   end
 
 end
 
-
 local ac, ic = 0xFF00FFEE, 0xFF888888
 local dens = activity.getResources().getDisplayMetrics().density
-
 -- =========================================================
 -- TAB INDICATOR
 -- 125dp = bawat tab
