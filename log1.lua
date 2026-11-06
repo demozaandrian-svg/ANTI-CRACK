@@ -295,6 +295,7 @@ local p_menu = getParams(0, 0)
 local p_icon = getParams(0, 100)
 
 
+
 -- ==========================================
 -- INVISIBLE MENU TRIGGER
 -- ==========================================
@@ -302,15 +303,10 @@ local p_icon = getParams(0, 100)
 local isMenuHidden = false
 local hideTriggerAdded = false
 
--- Completely invisible touch area
+-- Invisible clickable view
 local hideTrigger = View(activity)
 hideTrigger.setBackgroundColor(0x00000000)
-hideTrigger.setAlpha(0.0)
 hideTrigger.setClickable(true)
-
-local p_hideTrigger = getParams(0, 0)
-p_hideTrigger.width = 55
-p_hideTrigger.height = 55
 
 hideTrigger.setOnClickListener{
   onClick = function(v)
@@ -322,11 +318,12 @@ hideTrigger.setOnClickListener{
     isMenuHidden = false
     hideTriggerAdded = false
 
+    -- Remove invisible trigger
     pcall(function()
       wm.removeView(hideTrigger)
     end)
 
-    -- Restore menu at original position
+    -- Restore menu
     pcall(function()
       wm.addView(win_menu, p_menu)
     end)
@@ -342,6 +339,7 @@ hideTrigger.setOnClickListener{
     isMenuOpen = true
   end
 }
+
 
 function createDragListener(wp, lv, cb)
   local ix, iy, itx, ity, idrag = 0,0,0,0,false
@@ -391,9 +389,11 @@ if t1 then
   end
 end
 
+
 -- ==========================================
 -- HIDE / SHOW MENU
 -- ==========================================
+
 if toggleIconVisibility then
 
   toggleIconVisibility.onClick = function()
@@ -402,19 +402,16 @@ if toggleIconVisibility then
       return
     end
 
-    -- Save exact menu position
-    p_hideTrigger.x = p_menu.x
-    p_hideTrigger.y = p_menu.y
-
-    -- Hide the actual menu
+    -- Remove menu
     pcall(function()
       wm.removeView(win_menu)
     end)
 
-    -- Add invisible clickable area
+    -- Place invisible trigger EXACTLY
+    -- where the floating icon is positioned
     pcall(function()
       if not hideTriggerAdded then
-        wm.addView(hideTrigger, p_hideTrigger)
+        wm.addView(hideTrigger, p_icon)
         hideTriggerAdded = true
       end
     end)
@@ -422,11 +419,10 @@ if toggleIconVisibility then
     isMenuHidden = true
     isMenuOpen = false
 
-    toggleIconVisibility.setColorFilter(0xFFFFFFFF)
-
   end
 
 end
+
 
 local ac, ic = 0xFF00FFEE, 0xFF888888
 local dens = activity.getResources().getDisplayMetrics().density
