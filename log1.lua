@@ -301,11 +301,11 @@ local p_icon = getParams(0, 100)
 local isMenuHidden = false
 local hideTriggerAdded = false
 
--- Separate trigger na hindi kasama sa menufloating
 local hideTrigger = ImageView(activity)
-hideTrigger.setImageResource(android.R.drawable.ic_menu_view)
-hideTrigger.setColorFilter(0xFF00FFEE)
-hideTrigger.setPadding(12, 12, 12, 12)
+
+-- Completely transparent pero clickable pa rin
+hideTrigger.setAlpha(0.0)
+hideTrigger.setBackgroundColor(0x00000000)
 
 local p_hideTrigger = getParams(0, 0)
 p_hideTrigger.width = 55
