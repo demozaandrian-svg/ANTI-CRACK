@@ -887,40 +887,15 @@ local function applyAimbotSeekbar(progress)
   local aimStrength = finalValue * 1.0
   local hexValue = floatToHexLE(aimStrength)
 
+    HexPatches.MemoryPatch("libunity.so", 0x66BD5E8, "h40 00 00 1C")
+    HexPatches.MemoryPatch("libunity.so", 0x66BD5E8 + 4, "hC0 03 5F D6")
+    HexPatches.MemoryPatch("libunity.so", 0x66BD5E8 + 8, hexValue, 4)
 
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x66BD5E8,
-    "h40 00 00 1C"
-  )
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x66BD5E8 + 4,
-    "hC0 03 5F D6"
-  )
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x66BD5E8 + 8,
-    hexValue,
-    4
-  )
+    -- Offset 2: Aim Assist Range/Power
+    HexPatches.MemoryPatch("libunity.so", 0x54F0E64, "h40 00 00 1C")
+    HexPatches.MemoryPatch("libunity.so", 0x54F0E64 + 4, "hC0 03 5F D6")
+    HexPatches.MemoryPatch("libunity.so", 0x54F0E64 + 8, hexValue, 4)
 
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x54F0E64,
-    "h40 00 00 1C"
-  )
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x54F0E64 + 4,
-    "hC0 03 5F D6"
-  )
-  HexPatches.MemoryPatch(
-    "libunity.so",
-    0x54F0E64 + 8,
-    hexValue,
-    4
-  )
 end
 
 
