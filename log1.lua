@@ -1661,23 +1661,6 @@ function wall.OnCheckedChangeListener()
   end
 end
 
-wo.ButtonDrawable.setColorFilter(PorterDuffColorFilter(0xFF00FFEE, PorterDuff.Mode.SRC_ATOP))
-function wo.OnCheckedChangeListener()
-  if wo.checked then
-    HexPatches.MemoryPatch("libunity.so", 0x9677554, "h20 00 80 D2 C0 03 5F D6") -- get_IsInEM3Eye
-    HexPatches.MemoryPatch("libunity.so", 0xAD1FCDC , "h40 00 00 1C C0 03 5F D6") -- GetAccDistance
-    HexPatches.MemoryPatch("libunity.so", 0xAD1FCDC + 4, "hC0 03 5F D6 00 00 7A 44") -- GetAccDistance
-    HexPatches.MemoryPatch("libunity.so", 0xAD1FCDC + 8, hexValue, 16) -- GetAccDistance
-    HexPatches.MemoryPatch("libunity.so", 0x967755C , "h40 00 00 1C C0 03 5F D6") -- set_IsInEM3Eye
-    HexPatches.MemoryPatch("libunity.so", 0x967755C + 4, "hC0 03 5F D6 00 00 7A 44") -- set_IsInEM3Eye
-    HexPatches.MemoryPatch("libunity.so", 0x967755C + 8, hexValue, 16) -- set_IsInEM3Eye
-    idkcstmToast("ᴏᴜᴛʟɪɴᴇ : ᴀᴄᴛɪᴠᴀᴛᴇᴅ")
-   else
-  end
-end
-
-
-
 redhack.ButtonDrawable.setColorFilter(PorterDuffColorFilter(0xFF00FFEE, PorterDuff.Mode.SRC_ATOP))
 function redhack.OnCheckedChangeListener()
   if redhack.checked then
@@ -1693,16 +1676,6 @@ function norecoil.OnCheckedChangeListener()
   if norecoil.checked then
     HexPatches.MemoryPatch("libunity.so", 0xD535A6C, "h20 4C 40 BC C0 03 5F D6")
     idkcstmToast("NO RECOIL: ACTIVATED")
-  end
-end
-
-
-br.ButtonDrawable.setColorFilter(PorterDuffColorFilter(0xFF00FFEE, PorterDuff.Mode.SRC_ATOP))
-function br.OnCheckedChangeListener()
-  if br.checked then
-    antiC4droid()
-    HexPatches.MemoryPatch("libunity.so", 0x6422E84, "h20 00 80 D2 C0 03 5F D6", 32) -- brtags1
-    HexPatches.MemoryPatch("libunity.so", 0x5985F8C, "h00 00 80 D2 C0 03 5F D6", 32); -- brtags2
   end
 end
 
